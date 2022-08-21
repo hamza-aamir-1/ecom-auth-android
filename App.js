@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Home from './src/screens/frontend/Home/Home'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { AppNavigation } from './src/screens/appNavigation';
 
 const App = () => {
   return (
-    <View>
-      <Text>App</Text>
-      <Home />
-    </View>
+    <>
+      <AppNavigation />
+    </>
   )
 }
 
