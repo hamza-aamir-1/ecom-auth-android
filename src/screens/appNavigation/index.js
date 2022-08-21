@@ -1,14 +1,17 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, {useContext} from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from '../frontend/Home/Home';
 import { Login } from '../auth/Login';
 import { Register } from '../auth/Register';
+import { AuthContext } from '../../context/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
 export const AppNavigation = () => {
-    const isAuthenticated = false;
+
+    const { userStatus} = useContext(AuthContext);
+    const isAuthenticated = userStatus;
+
   return (
     <Stack.Navigator>
 

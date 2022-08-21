@@ -1,10 +1,34 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import auth from '@react-native-firebase/auth';
+import { AuthContext } from '../../context/AuthContext';
 import { StyleSheet, Text, View, TextInput, TouchableHighlight, Alert } from 'react-native';
 
 export const Login = ({ navigation }) => {
-
+  const { setUserStatus} = useContext(AuthContext);
   const [email, onChangeEmail] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
+
+  const login = () => {
+    auth()
+  .signInWithEmailAndPassword('janedoe@example.com', 'SuperSecretPassword!')
+  .then(() => {
+    console.log('User logged in successfully!');
+    setUserStatus(true);
+  })
+  .catch(error => {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+      Alert.alert('Email already in use...!');
+    }
+
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+      Alert.alert('Email is invalid...!');
+    }
+
+    console.error(error);
+  });
+  }
 
   return (
     <View style={styles.container}>
@@ -22,7 +46,7 @@ export const Login = ({ navigation }) => {
         value={password}
         placeholder="Password"
       />
-      <TouchableHighlight onPress={() => {Alert.alert('Logged in Successfully')}}>
+      <TouchableHighlight onPress={() => login()}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </View>

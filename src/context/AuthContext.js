@@ -1,7 +1,13 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthContextProvider = ({children}) => {
-    return <AuthContext.Provider>{children}</AuthContext.Provider>
+export const AuthContextProvider = ({children}) => {
+
+    const [userStatus, setUserStatus] = useState(false)
+
+    
+
+    return <AuthContext.Provider value={{userStatus, setUserStatus}}>{children}</AuthContext.Provider>
 };
