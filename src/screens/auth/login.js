@@ -5,28 +5,34 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight, Alert } from 're
 
 export const Login = ({ navigation }) => {
   const { setUserStatus} = useContext(AuthContext);
-  const [email, onChangeEmail] = React.useState(null);
-  const [password, onChangePassword] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
 
-  const login = () => {
+  const loginBtn = () => {
     auth()
-  .signInWithEmailAndPassword('janedoe@example.com', 'SuperSecretPassword!')
+  .signInWithEmailAndPassword(email, password)
   .then(() => {
     console.log('User logged in successfully!');
     setUserStatus(true);
   })
   .catch(error => {
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('That email address is already in use!');
-      Alert.alert('Email already in use...!');
-    }
 
     if (error.code === 'auth/invalid-email') {
       console.log('That email address is invalid!');
       Alert.alert('Email is invalid...!');
     }
 
-    console.error(error);
+    if (error.code === 'auth/user-not-found') {
+      console.log('That user not found!');
+      Alert.alert('User not found...!');
+    }
+
+    if (error.code === 'auth/wrong-password') {
+      console.log('That password is wrong!');
+      Alert.alert('Password is incorrect...!');
+    }
+
+    // console.error(error);
   });
   }
 
@@ -35,18 +41,18 @@ export const Login = ({ navigation }) => {
       <Text style={styles.heading}>Login</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeEmail}
+        onChangeText={setEmail}
         value={email}
         placeholder="Email Address"
         keyboardType="email"
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangePassword}
+        onChangeText={setPassword}
         value={password}
         placeholder="Password"
       />
-      <TouchableHighlight onPress={() => login()}>
+      <TouchableHighlight onPress={() => (!email || !password) ? Alert.alert("Enter Email and Password") : loginBtn()}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </View>

@@ -5,12 +5,12 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight, Alert } from 're
 
 export const Register = ({ navigation }) => {
   const { setUserStatus} = useContext(AuthContext);
-  const [email, onChangeEmail] = React.useState(null);
-  const [password, onChangePassword] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
 
   const signup = () => {
     auth()
-  .createUserWithEmailAndPassword('janedoe@example.com', 'SuperSecretPassword!')
+  .createUserWithEmailAndPassword(email, password)
   .then(() => {
     console.log('User account created & signed in!');
     setUserStatus(true);
@@ -26,7 +26,7 @@ export const Register = ({ navigation }) => {
       Alert.alert('Email is invalid...!');
     }
 
-    console.error(error);
+    // console.error(error);
   });
   }
 
@@ -35,18 +35,18 @@ export const Register = ({ navigation }) => {
       <Text style={styles.heading}>Register</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeEmail}
+        onChangeText={setEmail}
         value={email}
         placeholder="Email Address"
         keyboardType="email"
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangePassword}
+        onChangeText={setPassword}
         value={password}
         placeholder="Password"
       />
-      <TouchableHighlight onPress={() => signup()}>
+      <TouchableHighlight onPress={() => (!email || !password) ? Alert.alert("Enter Email and Password") : signup()}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>SIGNUP</Text>
         </View>
